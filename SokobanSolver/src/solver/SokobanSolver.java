@@ -454,7 +454,7 @@ public class SokobanSolver implements Plannable<Position2D> {//Generates a new s
 							}
 						}		
 					}
-					Action<Position2D> ac=new Action<>("Move_MainCharacter_In_Direction",array);
+					Action<Position2D> ac=new Action<Position2D>("Move_MainCharacter_In_Direction",array);
 					ac.setEffects(new AndPredicate<>(prec));
 					ac.setPreconditions(new AndPredicate<>(eff));
 					ArrayList<Action<Position2D>> arr=new ArrayList<>();
