@@ -5,6 +5,8 @@ import java.io.OutputStream;
 
 public class Client {
 	
+	
+	//TODO: CLIENT SHOULD EXPECT A ServerPlan
 	private String ip;
 	private String name;
 	private boolean connected;

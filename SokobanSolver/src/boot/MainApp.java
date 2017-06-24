@@ -12,6 +12,9 @@ import viewModel.ServerWindowController;
 
 public class MainApp extends Application {
 	
+	// TODO: Ask jersey server if level is already planned, yes -> return it,
+	//no -> plan it and send to both the server (PUT) and the client 
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Platform.runLater(()->{

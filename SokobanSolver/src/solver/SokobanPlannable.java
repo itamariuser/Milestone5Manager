@@ -1,5 +1,7 @@
 package solver;
 
+
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ import algorithm.Plannable;
 import algorithm.Predicate;
 import algorithm.SimplePredicate;
 import commons.Level2D;
+import data.BestFirstSearcher;
 import data.GoalNotFoundException;
 import data.Searchable;
 import data.Searcher;
@@ -25,12 +28,13 @@ import model.data.MainCharacter;
 import model.data.Position2D;
 import model.data.Wall;
 
-public class SokobanSolver implements Plannable<Position2D> {//Generates a new searchable, everytime goalState= where we want to go for "Move player" action
-	Searcher<Position2D> searcher;
+public class SokobanPlannable implements Plannable<Position2D>{
+
+	BestFirstSearcher<Position2D> searcher;
 	AndPredicate<Position2D> kb;
 	AndPredicate<Position2D> goal;
 	int[] bounds;
-	public SokobanSolver(Level2D level, Searcher<Position2D> s) {
+	public SokobanPlannable(Level2D level) {
 		kb=new AndPredicate<Position2D>();
 		//generate knowledgebase
 		HashMap<Position2D, ArrayList<GameObject>> layout=level.getPositionObjectLayout();
@@ -43,17 +47,17 @@ public class SokobanSolver implements Plannable<Position2D> {//Generates a new s
 				level.getPositionsOfObject(g).forEach((p)->pToReturn.add(new SimplePredicate<Position2D>("Crate_At",p)));});
 		goal = pToReturn;
 		//WE DIDNT CHECK IF OUT OF BOUNDS
-		this.searcher=s;
+		searcher=new BestFirstSearcher<>();
 	}
 	
-	public Level2D toLevel(AndPredicate<Position2D> knowledgeB)
+	public Level2D toLevel()
 	{
 		Level2D levelToReturn = new Level2D();
 		GameObjectFactory factory = new GameObjectFactory();
 		GameObject obj;
 		ArrayList<GameObject> objRef = new ArrayList<GameObject>();
 		ArrayList<GameObject> arr = new ArrayList<GameObject>();
-		for (Predicate<Position2D> p : knowledgeB.getComponents()) {
+		for (Predicate<Position2D> p : kb.getComponents()) {
 			Position2D pos = p.getData();
 			if(p.getName().startsWith("Crate_At"))
 			{
@@ -454,7 +458,7 @@ public class SokobanSolver implements Plannable<Position2D> {//Generates a new s
 							}
 						}		
 					}
-					Action<Position2D> ac=new Action<Position2D>("Move_MainCharacter_In_Direction",array);
+					Action<Position2D> ac=new Action<>("Move_MainCharacter_In_Direction",array);
 					ac.setEffects(new AndPredicate<>(prec));
 					ac.setPreconditions(new AndPredicate<>(eff));
 					ArrayList<Action<Position2D>> arr=new ArrayList<>();
@@ -530,4 +534,5 @@ public class SokobanSolver implements Plannable<Position2D> {//Generates a new s
 		boolean eq=p1.equals(p2);
 		return eq;
 	}
+
 }
