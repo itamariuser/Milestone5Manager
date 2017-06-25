@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TableView fx:id="tableView" layoutX="3.0" layoutY="4.0" prefHeight="511.0" prefWidth="542.0" />
@@ -16,7 +15,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="399.0" layoutY="537.0" mnemonicParsing="false" onAction="#shutdown" prefHeight="54.0" prefWidth="134.0" text="Shutdown server" textFill="RED">
+      <Button layoutX="402.0" layoutY="561.0" mnemonicParsing="false" onAction="#shutdown" prefHeight="27.0" prefWidth="134.0" text="Shutdown server" textFill="RED">
          <font>
             <Font size="14.0" />
          </font>
@@ -24,5 +23,10 @@
       <RadioButton fx:id="awaitingRadioButton" layoutX="158.0" layoutY="559.0" mnemonicParsing="false" onAction="#showWaiting" text="Show waiting" />
       <RadioButton fx:id="hanledRadioButton" layoutX="282.0" layoutY="559.0" mnemonicParsing="false" onAction="#showHistory" text="Show history" />
       <Label fx:id="hint" layoutX="195.0" layoutY="529.0" text="Click on one of the options:" />
+      <Button layoutX="402.0" layoutY="522.0" mnemonicParsing="false" onAction="#startServer" prefHeight="27.0" prefWidth="134.0" text="Start server" textFill="#13a103">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

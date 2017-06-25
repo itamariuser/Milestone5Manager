@@ -25,7 +25,6 @@ public class SolverClientHandler implements ClientHandler {
 		Level2D levelToSolve = (Level2D) input.readObject(); //reading the level from the sokoban client
 		SokobanPlannable plannable = new SokobanPlannable(levelToSolve);
 		Strips<Position2D> strips = new Strips<Position2D>();
-		levelToSolve = (Level2D) input.readObject();
 		Plan<Position2D> levelPlan = strips.plan(plannable);
 		ServerPlan convertedPlan=PlanToServerPlanConverter.convertToServerPlan(strips.plan(plannable));
 		output.writeObject(convertedPlan); //writing to the client as ServerPlan (CLIENT SHOULD KNOW IT THROUGH JAR)

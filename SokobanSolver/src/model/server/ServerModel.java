@@ -10,6 +10,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Handle sokoban clients using thread pool (ExecutorService).
@@ -22,8 +23,6 @@ public class ServerModel extends Observable implements Server {
 	private BlockingQueue<Socket> handledClients; 
 	private ClientHandler ch;
 	private int nThreads;
-	
-	
 	
 	
 	public BlockingQueue<Socket> getAwaitingClients() {
@@ -54,6 +53,8 @@ public class ServerModel extends Observable implements Server {
 		this.ch = ch;
 		this.nThreads = nThreads;
 		arr=new ArrayList<>();
+		awaitingClients=new LinkedBlockingQueue<>();
+		handledClients=new LinkedBlockingQueue<>();
 	}
 	
 	public class ServerTask implements Callable<Boolean> {
@@ -83,7 +84,7 @@ public class ServerModel extends Observable implements Server {
 	{
 		ExecutorService executor = Executors.newFixedThreadPool(this.nThreads);
 		ServerSocket server = new ServerSocket(this.port);
-		server.setSoTimeout(10000);
+		server.setSoTimeout(1000000000);
 		while(!stop)
 		{ 
 			Socket sock=server.accept();
@@ -95,7 +96,13 @@ public class ServerModel extends Observable implements Server {
 			ServerModel.this.notifyObservers(arr);
 			executor.submit(new ServerTask());
 		}
+		executor.shutdown();
 		server.close();	
+	}
+	
+	public void shutdownServer()
+	{
+		this.stop = true;
 	}
 }
 

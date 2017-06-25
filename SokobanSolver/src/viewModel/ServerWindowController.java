@@ -1,7 +1,7 @@
 package viewModel;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,10 +49,8 @@ public class ServerWindowController extends Observable implements Observer{//Vie
 	private HashMap<InetAddress,Date> addTimes;
 	private HashMap<InetAddress,Date> handledTimes;
 	
-	private ArrayList<InetAddress> stubAwaiting;
-	private ArrayList<InetAddress> stubHandled;
-	
-	public ServerWindowController(){//ServerModel model) {
+	public ServerWindowController(ServerModel model) {
+		this.model=model;
 		/*this.model=model;
 		model.addObserver(this);*/
 		awaitingList=FXCollections.observableArrayList();
@@ -68,43 +66,53 @@ public class ServerWindowController extends Observable implements Observer{//Vie
 		isInit=false;
 		showAwaiting=false;
 		
-		stubAwaiting=new ArrayList<>();
-		stubHandled=new ArrayList<>();
+		ArrayList<Socket> awaitingClients = new ArrayList<Socket>();
+		ArrayList<Socket> handledClients = new ArrayList<Socket>();
+		
+		if(!awaitingClients.isEmpty())
+			awaitingClients.addAll(model.getAwaitingClients());
+		if(!handledClients.isEmpty())
+			handledClients.addAll(model.getHandledClients());
+
 		
 		addTimes=new HashMap<>();
 		handledTimes=new HashMap<>();
 		
+		if(!awaitingClients.isEmpty())
+			awaitingClients.forEach(s -> awaitingList.add(s.getInetAddress()));
+		if(!handledClients.isEmpty())
+			handledClients.forEach(s -> handledHistory.add(s.getInetAddress()));
 		
-		//STUB: SIMULATE GETTING ADDRESSES FROM SERVER
-		InetAddress i1=null;
-		try {
-			i1 = InetAddress.getLocalHost();
-
-			stubAwaiting.add(i1);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		awaitingList.addAll(stubAwaiting);
-		
-		InetAddress i2=null;
-		try {
-			i2 = InetAddress.getLocalHost();
-
-			stubHandled.add(i2);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		handledHistory.addAll(stubHandled);
-		addTimes.put(i1, new Date());
-		handledTimes.put(i2, new Date());
-		//END OF STUB
+//		//STUB: SIMULATE GETTING ADDRESSES FROM SERVER
+//		InetAddress i1=null;
+//		try {
+//			i1 = InetAddress.getLocalHost();
+//
+//			stubAwaiting.add(i1);
+//		} catch (UnknownHostException e) {
+//			e.printStackTrace();
+//		}
+//		awaitingList.addAll(stubAwaiting);
+//		
+//		InetAddress i2=null;
+//		try {
+//			i2 = InetAddress.getLocalHost();
+//
+//			stubHandled.add(i2);
+//		} catch (UnknownHostException e) {
+//			e.printStackTrace();
+//		}
+//		handledHistory.addAll(stubHandled);
+//		addTimes.put(i1, new Date());
+//		handledTimes.put(i2, new Date());
+//		//END OF STUB
 		
 		for (InetAddress inetAddress : awaitingList) {
 			addTimes.put(inetAddress, new Date());
 		}
 		
 		for (InetAddress inetAddress : handledHistory) {
-			addTimes.put(inetAddress, new Date());
+			handledTimes.put(inetAddress, new Date());
 		}
 	}
 	
@@ -148,7 +156,9 @@ public class ServerWindowController extends Observable implements Observer{//Vie
 					
 			}
 		});
-		
+		hostCol.setPrefWidth(180);
+		ipCol.setPrefWidth(180);
+		dateCol.setPrefWidth(180);
 		tableView.getColumns().clear();
 		tableView.getColumns().addAll(hostCol,ipCol,dateCol);
 	}
@@ -171,10 +181,12 @@ public class ServerWindowController extends Observable implements Observer{//Vie
 						if(s.endsWith("handledClients"))
 						{
 							handledHistory.add(i);
+							handledTimes.put(i, new Date());
 						}
 						else if(s.endsWith("awaitingClients"))
 						{
 							awaitingList.add(i);
+							addTimes.put(i, new Date());
 						}
 					}
 					if(s.startsWith("remove"))
@@ -231,6 +243,16 @@ public class ServerWindowController extends Observable implements Observer{//Vie
 	
 	public void shutdown()
 	{
-		
+		model.shutdownServer();
+	}
+	
+	public void startServer()
+	{
+		try {
+			model.runServer();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.server.ServerModel;
+import model.server.SolverClientHandler;
 import viewModel.ServerWindowController;
 
 public class MainApp extends Application {
@@ -17,10 +19,11 @@ public class MainApp extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		ServerWindowController cont=new ServerWindowController(new ServerModel(2828, new SolverClientHandler(), 5));
 		Platform.runLater(()->{
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ServerWindow.fxml"));
-				loader.setController(new ServerWindowController());
+				loader.setController(cont);
 				Parent root = (Parent) loader.load();
 		        Stage stage = new Stage();
 		        Scene scene = new Scene(root);      
