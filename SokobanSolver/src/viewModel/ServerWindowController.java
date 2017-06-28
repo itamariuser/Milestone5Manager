@@ -248,11 +248,18 @@ public class ServerWindowController extends Observable implements Observer{//Vie
 	
 	public void startServer()
 	{
-		try {
-			model.runServer();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					model.runServer();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}).start();
 	}
 }

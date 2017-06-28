@@ -1,5 +1,6 @@
 package model.server;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -57,25 +58,36 @@ public class ServerModel extends Observable implements Server {
 		handledClients=new LinkedBlockingQueue<>();
 	}
 	
-	public class ServerTask implements Callable<Boolean> {
+	public class ServerTask implements Runnable {
 
 		@Override
-		public Boolean call() throws Exception {
-			Socket aClient = awaitingClients.take();
-			arr.clear();
-			arr.add(aClient.getInetAddress());
-			arr.add("remove awaitingClients");
-			ServerModel.this.setChanged();
-			ServerModel.this.notifyObservers(arr);
-			handledClients.put(aClient);
-			arr.clear();
-			arr.add(aClient.getInetAddress());
-			arr.add("add handledClients");
-			ServerModel.this.notifyObservers(arr);
-			boolean isSolvable = ch.handleClient(aClient.getInputStream(), aClient.getOutputStream());
-			aClient.getInputStream().close();
-			aClient.getOutputStream().close();
-			return isSolvable;
+		public void run() {
+			Socket aClient;
+			try {
+				aClient = awaitingClients.take();
+				arr.clear();
+				arr.add(aClient.getInetAddress());
+				arr.add("remove awaitingClients");
+				ServerModel.this.setChanged();
+				ServerModel.this.notifyObservers(arr);
+				handledClients.put(aClient);
+				arr.clear();
+				arr.add(aClient.getInetAddress());
+				arr.add("add handledClients");
+				ServerModel.this.notifyObservers(arr);
+				ch.handleClient(aClient.getInputStream(), aClient.getOutputStream());
+				aClient.close();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 	}
 	
@@ -84,7 +96,6 @@ public class ServerModel extends Observable implements Server {
 	{
 		ExecutorService executor = Executors.newFixedThreadPool(this.nThreads);
 		ServerSocket server = new ServerSocket(this.port);
-		server.setSoTimeout(1000000000);
 		while(!stop)
 		{ 
 			Socket sock=server.accept();
@@ -94,7 +105,7 @@ public class ServerModel extends Observable implements Server {
 			arr.add("add awaitingClients");
 			ServerModel.this.setChanged();
 			ServerModel.this.notifyObservers(arr);
-			executor.submit(new ServerTask());
+			executor.execute(new ServerTask());
 		}
 		executor.shutdown();
 		server.close();	

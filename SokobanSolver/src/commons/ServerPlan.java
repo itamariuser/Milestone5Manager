@@ -1,12 +1,14 @@
 package commons;
 
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+@SuppressWarnings("serial")
 @XmlRootElement
-public class ServerPlan {
+public class ServerPlan implements Serializable {
 	private LinkedList<ServerCommand> commands;
 
 	

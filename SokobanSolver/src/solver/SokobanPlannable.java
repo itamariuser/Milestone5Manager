@@ -330,13 +330,15 @@ public class SokobanPlannable implements Plannable<Position2D>{
 						
 						@Override
 						public State<Position2D> getInitialState() {
-							State z=new State<Position2D>(new Position2D(p.getData()));
+							Position2D pos = p.getData();
+							State z=new State<Position2D>(pos);
 							return z;
 						}
 						
 						@Override
 						public State<Position2D> getGoalState() {
-							State z= new State<Position2D>(new Position2D(top.getData()));
+							Position2D pos = top.getData();
+							State z= new State<Position2D>(pos);
 							return z;
 						}
 						
