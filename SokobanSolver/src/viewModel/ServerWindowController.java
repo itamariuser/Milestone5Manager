@@ -51,8 +51,7 @@ public class ServerWindowController extends Observable implements Observer{//Vie
 	
 	public ServerWindowController(ServerModel model) {
 		this.model=model;
-		/*this.model=model;
-		model.addObserver(this);*/
+		model.addObserver(this);
 		awaitingList=FXCollections.observableArrayList();
 		handledHistory=FXCollections.observableArrayList();
 		/*for (Socket socket : model.getAwaitingClients()) {
@@ -180,13 +179,15 @@ public class ServerWindowController extends Observable implements Observer{//Vie
 					{
 						if(s.endsWith("handledClients"))
 						{
-							handledHistory.add(i);
 							handledTimes.put(i, new Date());
+							handledHistory.add(i);
+							System.out.println("F");
 						}
 						else if(s.endsWith("awaitingClients"))
 						{
-							awaitingList.add(i);
 							addTimes.put(i, new Date());
+							awaitingList.add(i);
+							System.out.println("F");
 						}
 					}
 					if(s.startsWith("remove"))

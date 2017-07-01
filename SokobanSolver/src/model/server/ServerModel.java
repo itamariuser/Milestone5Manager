@@ -74,6 +74,7 @@ public class ServerModel extends Observable implements Server {
 				arr.clear();
 				arr.add(aClient.getInetAddress());
 				arr.add("add handledClients");
+				ServerModel.this.setChanged();
 				ServerModel.this.notifyObservers(arr);
 				ch.handleClient(aClient.getInputStream(), aClient.getOutputStream());
 				aClient.close();
@@ -101,7 +102,7 @@ public class ServerModel extends Observable implements Server {
 			Socket sock=server.accept();
 			awaitingClients.put(sock);
 			ArrayList<Object> arr=new ArrayList<>();
-			arr.add(sock);
+			arr.add(sock.getInetAddress());
 			arr.add("add awaitingClients");
 			ServerModel.this.setChanged();
 			ServerModel.this.notifyObservers(arr);
