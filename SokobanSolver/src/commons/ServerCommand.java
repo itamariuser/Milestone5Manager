@@ -1,6 +1,9 @@
 package commons;
 
-public class ServerCommand {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class ServerCommand implements Serializable {
 	String direction;
 
 	public ServerCommand(String direction) {

@@ -4,14 +4,13 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.LinkedList;
 
 import algorithm.Plan;
-import algorithm.Strips;
 import commons.Level2D;
+import commons.ServerCommand;
 import commons.ServerPlan;
 import model.data.Position2D;
-import solver.PlanToServerPlanConverter;
-import solver.SokobanPlannable;
 
 public class SolverClientHandler implements ClientHandler {
 
@@ -27,18 +26,22 @@ public class SolverClientHandler implements ClientHandler {
 			output = new ObjectOutputStream(outToClient);
 			input = new ObjectInputStream(inFromClient);
 			Level2D levelToSolve = (Level2D) input.readObject(); //reading the level from the sokoban client
-			SokobanPlannable plannable = new SokobanPlannable(levelToSolve);
-			Strips<Position2D> strips = new Strips<Position2D>();
-			Thread t = new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					planning = strips.plan(plannable);					
-				}
-			});
-			t.start();
-			t.join();
-			ServerPlan convertedPlan=PlanToServerPlanConverter.convertToServerPlan(planning);
+//			SokobanPlannable plannable = new SokobanPlannable(levelToSolve);
+//			Strips<Position2D> strips = new Strips<Position2D>();
+//			Thread t = new Thread(new Runnable() {
+//				
+//				@Override
+//				public void run() {
+//					planning = strips.plan(plannable);					
+//				}
+//			});
+//			t.start();
+//			t.join();
+//			ServerPlan convertedPlan=PlanToServerPlanConverter.convertToServerPlan(planning);
+			ServerCommand comm = new ServerCommand("right");
+			LinkedList<ServerCommand> arr = new LinkedList<ServerCommand>();
+			arr.add(comm);
+			ServerPlan convertedPlan = new ServerPlan(arr);
 			output.writeObject(convertedPlan); //writing to the client as ServerPlan (CLIENT SHOULD KNOW IT THROUGH JAR)
 			output.close();
 		} catch (Exception e) {
