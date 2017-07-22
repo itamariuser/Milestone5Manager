@@ -54,14 +54,6 @@ public class ServerWindowController extends Observable implements Observer{//Vie
 		model.addObserver(this);
 		awaitingList=FXCollections.observableArrayList();
 		handledHistory=FXCollections.observableArrayList();
-		/*for (Socket socket : model.getAwaitingClients()) {
-			awaitingList.add(socket.getInetAddress());
-			addTimes.put(socket.getInetAddress(),ZonedDateTime.now());
-		}
-		for (Socket socket : model.getHandledClients()) {
-			handledHistory.add(socket.getInetAddress());
-			handledTimes.put(socket.getInetAddress(),ZonedDateTime.now());
-		}*/
 		isInit=false;
 		showAwaiting=false;
 		
@@ -256,10 +248,8 @@ public class ServerWindowController extends Observable implements Observer{//Vie
 				try {
 					model.runServer();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
 			}
 		}).start();
 	}
