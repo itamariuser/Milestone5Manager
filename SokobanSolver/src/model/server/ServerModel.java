@@ -33,7 +33,10 @@ public class ServerModel extends Observable implements Server {
 	}
 
 	ArrayList<Object> arr;
-	
+	/**
+	 * Removes the client that the address refers to from the awaiting clients list
+	 * @param addr
+	 */
 	public void RemoveFromAwaitingClients(InetAddress addr)
 	{
 		if (awaitingClients.contains(addr)) 
@@ -56,8 +59,7 @@ public class ServerModel extends Observable implements Server {
 		handledClients=new LinkedBlockingQueue<>();
 	}
 	
-	public class ServerTask implements Runnable {
-
+	private class ServerTask implements Runnable {
 		@Override
 		public void run() {
 			Socket aClient;
@@ -89,7 +91,9 @@ public class ServerModel extends Observable implements Server {
 			
 		}
 	}
-	
+	/**
+	 * This method is used to run the server.
+	 */
 	@Override
 	public void runServer() throws Exception
 	{
@@ -109,7 +113,9 @@ public class ServerModel extends Observable implements Server {
 		executor.shutdown();
 		server.close();	
 	}
-	
+	/**
+	 * This method is used to shutdown the server.
+	 */
 	public void shutdownServer()
 	{
 		this.stop = true;

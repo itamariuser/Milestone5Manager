@@ -24,20 +24,16 @@ import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import model.server.ServerModel;
 
-public class ServerWindowController extends Observable implements Observer{//ViewModel
-
+public class ServerWindowController extends Observable implements Observer{ //ViewModel
+	
 	@FXML
 	TableView<InetAddress> tableView;
-	
 	ServerModel model;
 	boolean isInit;
-	
 	@FXML
 	Label hint;
-	
 	@FXML
 	RadioButton awaitingRadioButton;
-	
 	@FXML
 	RadioButton hanledRadioButton;
 	
@@ -239,6 +235,9 @@ public class ServerWindowController extends Observable implements Observer{//Vie
 		model.shutdownServer();
 	}
 	
+	/**
+	 * Starts the server.
+	 */
 	public void startServer()
 	{
 		new Thread(new Runnable() {

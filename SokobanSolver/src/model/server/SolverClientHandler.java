@@ -10,8 +10,18 @@ import commons.Level2D;
 import commons.RestClient;
 import commons.ServerCommand;
 import commons.ServerPlan;
-
+import solver.SokobanSolver;
+/**
+ * A ClientHandler that responsible to handle a client that request a solution for
+ * Sokoban level using algorithm and REST server.
+ * @author Matan
+ */
 public class SolverClientHandler implements ClientHandler {
+	
+	private String uri;
+	public SolverClientHandler(String uri) {
+		this.uri = uri;
+	}
 	@Override
 	public void handleClient(InputStream inFromClient, OutputStream outToClient) throws Exception {
 		ObjectOutputStream output = null;
@@ -20,16 +30,12 @@ public class SolverClientHandler implements ClientHandler {
 			output = new ObjectOutputStream(outToClient);
 			input = new ObjectInputStream(inFromClient);
 			Level2D levelToSolve = (Level2D) input.readObject(); //reading the level from the sokoban client
-			RestClient client = RestClient.getInstance();
-			client.setServerURI("http://localhost:8080/Milestone5SolutionRestServer/");
-			ServerPlan restPlan = client.getPlanForLevelName(levelToSolve.getName());
+			ServerPlan restPlan = getExistingPlan(this.uri, levelToSolve);
 			if(restPlan.getCommands().isEmpty())
 			{
-				ServerCommand comm = new ServerCommand("Move right");
-				LinkedList<ServerCommand> arr = new LinkedList<ServerCommand>();
-				arr.add(comm);
-				ServerPlan convertedPlan = new ServerPlan(arr);
-				output.writeObject(convertedPlan); //writing to the client as ServerPlan (CLIENT SHOULD KNOW IT THROUGH JAR)
+				SokobanSolver solver = new SokobanSolver();
+				ServerPlan algoPlan = ServerPlanAdapter.convert(solver.solveLevel(levelToSolve), levelToSolve.getName());
+				output.writeObject(algoPlan);
 			}
 			else
 			{
@@ -51,6 +57,13 @@ public class SolverClientHandler implements ClientHandler {
 		}
 
 	
+	}
+	private ServerPlan getExistingPlan(String uri, Level2D levelToSolve) throws Exception
+	{
+		RestClient client = RestClient.getInstance();
+		client.setServerURI(uri);
+		return client.getPlanForLevelName(levelToSolve.getName());
+		
 	}
 
 	
