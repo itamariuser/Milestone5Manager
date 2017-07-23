@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Handle sokoban clients using thread pool (ExecutorService).
+ * A class for handling sokoban clients using thread pool.
  */
 public class ServerModel extends Observable implements Server {
 	
@@ -34,8 +34,8 @@ public class ServerModel extends Observable implements Server {
 
 	ArrayList<Object> arr;
 	/**
-	 * Removes the client that the address refers to from the awaiting clients list
-	 * @param addr
+	 * Removes the client that the address refers to from the awaiting clients list.
+	 * @param addr - The client's address. 
 	 */
 	public void RemoveFromAwaitingClients(InetAddress addr)
 	{
@@ -58,7 +58,9 @@ public class ServerModel extends Observable implements Server {
 		awaitingClients=new LinkedBlockingQueue<>();
 		handledClients=new LinkedBlockingQueue<>();
 	}
-	
+	/**
+	 * A class for updating the client list and history.
+	 */
 	private class ServerTask implements Runnable {
 		@Override
 		public void run() {
@@ -92,7 +94,7 @@ public class ServerModel extends Observable implements Server {
 		}
 	}
 	/**
-	 * This method is used to run the server.
+	 * Run the server.
 	 */
 	@Override
 	public void runServer() throws Exception
@@ -114,7 +116,7 @@ public class ServerModel extends Observable implements Server {
 		server.close();	
 	}
 	/**
-	 * This method is used to shutdown the server.
+	 * Shutdown the server.
 	 */
 	public void shutdownServer()
 	{

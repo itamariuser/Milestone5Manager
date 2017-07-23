@@ -13,7 +13,9 @@ import model.server.SolverClientHandler;
 import viewModel.ServerWindowController;
 
 public class MainApp extends Application {
-	
+	/**
+	 * Run from here to display the control panel for the solution server administrator.
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		ServerWindowController cont=new ServerWindowController(new ServerModel(5481, new SolverClientHandler("http://localhost:8080/Milestone5SolutionRestServer/"), 5));

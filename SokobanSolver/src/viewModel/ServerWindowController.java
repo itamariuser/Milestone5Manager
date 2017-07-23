@@ -103,7 +103,9 @@ public class ServerWindowController extends Observable implements Observer{ //Vi
 		}
 	}
 	
-	
+	/**
+	 * Call when first starting the server.
+	 */
 	@SuppressWarnings("unchecked")
 	private void init()
 	{
@@ -194,11 +196,17 @@ public class ServerWindowController extends Observable implements Observer{ //Vi
 		}
 	}
 	
+	/**
+	 * Remove the selected client from awaiting clients.
+	 */
 	public void kickUser()
 	{
 		model.RemoveFromAwaitingClients(tableView.getSelectionModel().getSelectedItem());
 	}
 	
+	/*
+	 * Set the table's view mode to show awaiting clients.
+	 */
 	public void showWaiting()
 	{
 		if(!isInit) init();
@@ -210,7 +218,9 @@ public class ServerWindowController extends Observable implements Observer{ //Vi
 		
 		setTableData(data);
 	}
-	
+	/**
+	 * Set the table's view mode to show the client history.
+	 */
 	public void showHistory()
 	{
 		if(!isInit) init();
@@ -223,6 +233,10 @@ public class ServerWindowController extends Observable implements Observer{ //Vi
 		setTableData(data);
 	}
 	
+	/**
+	 * Set the table's data to a new list.
+	 * @param data - The data to be updated.
+	 */
 	private void setTableData(FilteredList<InetAddress> data)
 	{
 		SortedList<InetAddress> sortedData = new SortedList<>(data);
