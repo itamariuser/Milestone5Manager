@@ -15,10 +15,13 @@ import viewModel.ServerWindowController;
 public class MainApp extends Application {
 	/**
 	 * Run from here to display the control panel for the solution server administrator.
+	 * Change the URI to fit the 
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		ServerWindowController cont=new ServerWindowController(new ServerModel(5481, new SolverClientHandler("http://localhost:8080/Milestone5SolutionRestServer/"), 5));
+		String ip="localhost";
+		String port="8080";
+		ServerWindowController cont=new ServerWindowController(new ServerModel(5481, new SolverClientHandler("http://"+ip+":"+"/Milestone5SolutionRestServer/"), 5));
 		Platform.runLater(()->{
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ServerWindow.fxml"));

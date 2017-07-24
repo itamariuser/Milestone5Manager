@@ -7,5 +7,7 @@
 	<classpathentry kind="lib" path="libs/SokoCommons.jar"/>
 	<classpathentry kind="lib" path="libs/SokoData.jar"/>
 	<classpathentry kind="lib" path="libs/SokoGameObjects.jar"/>
+	<classpathentry kind="lib" path="libs/stripsLib.jar"/>
+	<classpathentry kind="lib" path="libs/searchLib.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
