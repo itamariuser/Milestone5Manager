@@ -70,29 +70,6 @@ public class ServerWindowController extends Observable implements Observer{ //Vi
 		if(!handledClients.isEmpty())
 			handledClients.forEach(s -> handledHistory.add(s.getInetAddress()));
 		
-//		//STUB: SIMULATE GETTING ADDRESSES FROM SERVER
-//		InetAddress i1=null;
-//		try {
-//			i1 = InetAddress.getLocalHost();
-//
-//			stubAwaiting.add(i1);
-//		} catch (UnknownHostException e) {
-//			e.printStackTrace();
-//		}
-//		awaitingList.addAll(stubAwaiting);
-//		
-//		InetAddress i2=null;
-//		try {
-//			i2 = InetAddress.getLocalHost();
-//
-//			stubHandled.add(i2);
-//		} catch (UnknownHostException e) {
-//			e.printStackTrace();
-//		}
-//		handledHistory.addAll(stubHandled);
-//		addTimes.put(i1, new Date());
-//		handledTimes.put(i2, new Date());
-//		//END OF STUB
 		
 		for (InetAddress inetAddress : awaitingList) {
 			addTimes.put(inetAddress, new Date());
