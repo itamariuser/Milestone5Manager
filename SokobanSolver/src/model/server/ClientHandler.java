@@ -8,7 +8,7 @@ public interface ClientHandler {
 	 * This method is used to handle a client that connects the server.
 	 * @param inFromClient The InputStream that allows to send data to the client
 	 * @param outToClient The OutputStream that allows to receive data from the client
-	 * @throws Exception
+	 * @throws Exception - In case any of the streams weren't found.
 	 */
 	public void handleClient(InputStream inFromClient, OutputStream outToClient) throws Exception;
 }

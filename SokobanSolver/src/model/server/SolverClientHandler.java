@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.LinkedList;
 
 import common.Level2D;
 import commons.RESTClient;
@@ -27,7 +28,8 @@ public class SolverClientHandler implements ClientHandler {
 		try {
 			output = new ObjectOutputStream(outToClient);
 			input = new ObjectInputStream(inFromClient);
-			Level2D levelToSolve = (Level2D) input.readObject(); //reading the level from the sokoban client
+			Object o=input.readObject();
+			Level2D levelToSolve = (Level2D) o; //reading the level from the sokoban client
 			ServerPlan restPlan = getExistingPlan(this.uri, levelToSolve);
 			if(restPlan.getCommands().isEmpty())
 			{
@@ -58,10 +60,14 @@ public class SolverClientHandler implements ClientHandler {
 	}
 	private ServerPlan getExistingPlan(String uri, Level2D levelToSolve) throws Exception
 	{
-		RESTClient client = RESTClient.getInstance();
-		client.setServerURI(uri);
-		return client.getPlanForLevelName(levelToSolve.getName());
-		
+		//RESTORE
+//		RESTClient client = RESTClient.getInstance();
+//		client.setServerURI(uri);
+//		return client.getPlanForLevelName(levelToSolve.getName());
+		//END
+		//DELETE
+		return new ServerPlan(new LinkedList<>());
+		//END
 	}
 
 	

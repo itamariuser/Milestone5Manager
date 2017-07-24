@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="libs/ServerCommons.jar"/>
 	<classpathentry kind="lib" path="libs/solverLib.jar"/>
 	<classpathentry kind="lib" path="libs/SokoCommons.jar"/>
+	<classpathentry kind="lib" path="libs/SokoData.jar"/>
+	<classpathentry kind="lib" path="libs/SokoGameObjects.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
